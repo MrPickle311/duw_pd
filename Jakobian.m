@@ -26,7 +26,7 @@ r10=q(28:29);   fi10=q(30);
 
 rot_size = size(rot_pairs);
 
-for n = 1:2:rot_size
+for n = 1:rot_size
     i = rot_pairs(n).body_i;
     j = rot_pairs(n).body_j;
     point = rot_pairs(n).point;
@@ -47,6 +47,11 @@ for n = 1:2:rot_size
                                         fi_i,s_i,...
                                         fi_j,s_j);
 end
+
+% pary postepowe
+% TODO
+result(25:26,16:21) = jacobi_element_for_progressive_pair();
+result(27:28,22:27) = jacobi_element_for_progressive_pair();
 
 % DLACZEGO tu jest 1 na koncu
 %result(7,9)=1;
