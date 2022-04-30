@@ -110,15 +110,6 @@ function [rot_pairs,body_0,bodies,fi_6_7,dNM7,vNM7,fi_8_9,dHG8,vHG8] = moje_dane
     % bodies{nr czlonu}{nr.punktu}.point lub local_vector
     % body = bodies{2}{3}.point
     % pobranie rozmiaru tego : s = size(bodies{2}) , s(2) to jest rozmiar
-
-    % para 6-7
-    fi_6_7 = -pi; % staly kat obrotu ukladu 6 wzgledem 7
-    dNM7 = [1 0]'; % wersor ruchu wzglêdnego w ukladzie 6
-    vNM7 = [0 1]'; % wersor prostopad³y do osi ruchu wzglednego w ukladzie 6
-    % Para 8-9
-    fi_8_9 = -pi; % staly kat obrotu ukladu 8 wzgledem 9
-    dHG8 = [1 0]'; % wersor ruchu wzglêdnego w ukladzie 8
-    vHG8 = [0 1]'; % wersor prostopadly do osi ruchu wzglednego w ukladzie 8
 end
 
 function result = define_rotation_pair(body_i,body_j,point)

@@ -1,6 +1,6 @@
 function result=Jakobian(q,rot_pairs,bodies,body0)
 
-% Macierz Jaocobiego - pocz�tkowo zerowa
+% Macierz Jaocobiego - początkowo zerowa
 result=zeros(30,30);
 
 % definicja par obrotowych
@@ -17,10 +17,10 @@ r8=q(22:23);    fi8=q(24);
 r9=q(25:26);    fi9=q(27);
 r10=q(28:29);   fi10=q(30);
 
-% Obliczenie macierzy kosinus�w kierunkowych
+% Obliczenie macierzy kosinusów kierunkowych
 %Rot1=Rot(fi1);  Rot2=Rot(fi2);  Rot3=Rot(fi3);
 
-% Macierz Jaocobiego - wypelnianie niezerowych element�w
+% Macierz Jaocobiego - wypelnianie niezerowych elementów
 
 % pary obrotowe
 
@@ -40,7 +40,6 @@ for n = 1:rot_size
     end
     
     fi_j = q(3*j);
-    
     s_j = get_local_vector(bodies,j,point);
 
     result = insert_rotation_pair_into_jacobi(result,i,j,n,...
@@ -49,10 +48,31 @@ for n = 1:rot_size
 end
 
 % pary postepowe
-% TODO
-result(25:26,16:21) = jacobi_element_for_progressive_pair();
-result(27:28,22:27) = jacobi_element_for_progressive_pair();
 
+% para 6-7
+fi_6_7 = -pi; % staly kat obrotu ukladu 6 wzgledem 7
+dNM7 = [1 0]'; % wersor ruchu wzglêdnego w ukladzie 6
+vNM7 = [0 1]'; % wersor prostopad³y do osi ruchu wzglednego w ukladzie 6
+% Para 8-9
+fi_8_9 = -pi; % staly kat obrotu ukladu 8 wzgledem 9
+dHG8 = [1 0]'; % wersor ruchu wzglêdnego w ukladzie 8
+vHG8 = [0 1]'; % wersor prostopadly do osi ruchu wzglednego w ukladzie 8
+
+result(25:26,16:21) = jacobi_element_for_progressive_pair(r6,fi6,bodies{6}{1}.local_vec, ...
+                                                          r7,fi7,vNM7);
+result(27:28,22:27) = jacobi_element_for_progressive_pair(r8,fi8,bodies{8}{1}.local_vec, ...
+                                                          r9,fi9,vHG8);
+
+ % wiezy kierujace
+tmp(1:2,1:6) = jacobi_element_for_progressive_pair(r6,fi6,bodies{6}{1}.local_vec, ...
+                                                          r7,fi7,dNM7);
+result(29,16:21) = tmp(2,1:6);
+
+tmp(1:2,1:6) = jacobi_element_for_progressive_pair(r8,fi8,bodies{8}{1}.local_vec, ...
+                                                          r9,fi9,dHG8); 
+result(30,22:27) = tmp(2,1:6);
+end
+                                                      
 % DLACZEGO tu jest 1 na koncu
 %result(7,9)=1;
 %result(8,7:8)=-v0';
