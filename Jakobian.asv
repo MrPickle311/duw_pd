@@ -1,0 +1,63 @@
+function result=Jakobian(q)
+
+% Macierz Jaocobiego - pocz¹tkowo zerowa
+result=zeros(30,30);
+
+% definicja par obrotowych
+
+r0=[0;0];       fi0 = 0;
+r1=q(1:2);      fi1=q(3);    
+r2=q(4:5);      fi2=q(6);    
+r3=q(7:8);      fi3=q(9);
+r4=q(10:11);    fi4=q(12);   
+r5=q(13:14);    fi5=q(15);   
+r6=q(16:17);    fi6=q(18);
+r7=q(19:20);    fi7=q(21);   
+r8=q(22:23);    fi8=q(24);   
+r9=q(25:26);    fi9=q(27);
+r10=q(28:29);   fi10=q(30);
+
+% Obliczenie macierzy kosinusów kierunkowych
+Rot1=Rot(fi1);  Rot2=Rot(fi2);  Rot3=Rot(fi3);
+
+% pary obrotowe
+
+for n = 1:10
+    i = rot_pairs(n).body_i;
+    j = rot_pairs(n).body_j;
+    point = rot_pairs(n).point;
+    
+    if i == 0
+        fi_i = fi0;
+        r_i = r0;
+    else
+        ri = q(3*i - 2:3*i -1);
+        fi_i = q(3*i);
+    end
+    
+    rj = q(3*j - 2:3*j -1);
+    fi_j = q(3*j);
+    
+    result = insert_rotation_pair_into_jacobi(result,i,j,n,...
+                                        fi_i,s1A_1,...
+                                        fi4,s4A_4);
+end
+
+i = 1; j = 4; n = 1;
+result = insert_rotation_pair_into_jacobi(result,i,j,n,fi1,s1A_1,fi4,s4A_4);
+i = 4; j = 5; n = 2;
+result = insert_rotation_pair_into_jacobi(result,i,j,n,fi1,s1A_1,fi4,s4A_4);
+
+result(i:i+2,n) = the_first_half_of_rotation_pair(temp);
+result(3*j-2:3*j,n) = the_first_half_of_rotation_pair(temp);
+
+% Macierz Jaocobiego - wype³nianie niezerowych elementów
+result(1:2,3)=-Om*Rot1*sB1;
+result(3:4,1:6) = jacobi_element_for_rotation_pair(fi1,sA1,fi2,sB2);
+result(5:6,4:9) = jacobi_element_for_rotation_pair(fi2,sA2,fi3,sB3);
+
+% DLACZEGO tu jest 1 na koncu
+result(7,9)=1;
+result(8,7:8)=-v0';
+result(8,9)=-v0'*Om*Rot3*sA3;
+result(9,3)=1; 
