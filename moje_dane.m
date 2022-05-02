@@ -1,4 +1,4 @@
-function [rot_pairs,body_0,bodies,fi_6_7,dNM7,vNM7,fi_8_9,dHG8,vHG8] = moje_dane()
+function [rot_pairs,body_0,bodies,q0] = moje_dane()
     % konfiguracja poczatkowa w ukladzie globalnym
     % z pdfa
 
@@ -88,6 +88,20 @@ function [rot_pairs,body_0,bodies,fi_6_7,dNM7,vNM7,fi_8_9,dHG8,vHG8] = moje_dane
     s10M_10 = get_vector_from_local_origin_to_point(rM0,rc100);
     s10D_10 = get_vector_from_local_origin_to_point(rD0,rc100);
 
+    % nadawanie wartosci startowych
+
+    % nadajemy wstepne polozenie czlonu(rc_i) oraz wstepna orientacje (s1A_1)
+    q0(1:3,1) = generate_start_values(rc10,rA0);
+    q0(4:6,1) = generate_start_values(rc20,rO0);
+    q0(7:9,1) = generate_start_values(rc30,rF0);
+    q0(10:12,1) = generate_start_values(rc40,rA0);
+    q0(13:15,1) = generate_start_values(rc50,rC0);
+    q0(16:18,1) = generate_start_values(rc60,rN0);
+    q0(19:21,1) = generate_start_values(rc70,rM0);
+    q0(22:24,1) = generate_start_values(rc80,rH0);
+    q0(25:27,1) = generate_start_values(rc90,rG0);
+    q0(28:30,1) = generate_start_values(rc100,rE0);
+    
     % kreacja czlonow
     
     body_0 = produce_body0(['O' 'N' 'H'],[rO0 rN0 rH0]);
@@ -122,7 +136,9 @@ end
 function result = produce_body(points_descriptors , global_vectors_to_points, rc_i) 
     for i = 1:strlength(points_descriptors)
         result{i} = produce_body_entity(points_descriptors(i) ,...
-        get_vector_from_local_origin_to_point(global_vectors_to_points(i),rc_i));
+           get_vector_from_local_origin_to_point(global_vectors_to_points(:,i),rc_i));
+%        result{i}.point 
+%     result{i}.local_vec
     end
 end
 
@@ -130,6 +146,8 @@ function result = produce_body0(points_descriptors , global_vectors_to_points)
     for i = 1:strlength(points_descriptors)
         result{i} = produce_body_entity(points_descriptors(i) ,...
                                         global_vectors_to_points(:,i));
+                                    result{i}.point
+                                    result{i}.local_vec
     end
 end
 
