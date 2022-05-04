@@ -79,34 +79,34 @@ F(27:28,1) = progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
 % wk1 = 50;
 % fi_k1 = 0.0;
 
-lk1 = sqrt(17)/10;
+lk1 = sqrt(17)/5;
 ak1 = 0.1;
-wk1 = 1/4;
+wk1 = 0.1;
 fi_k1 = 0.0;
 
-lk2 = sqrt(26)/10;
-ak2 = 0.05;
-wk2 = 1/6;
+lk2 = sqrt(26)/5;
+ak2 = 0.1;
+wk2 = 0.1;
 fi_k2 = 0.0;
 
 func1 = @(t_i) lk1 + ak1*sin(wk1*t_i + fi_k1);
 
 func2 = @(t_i) lk2 + ak2*sin(wk2*t_i + fi_k2);
 
-% temp = progressive_pair(r6,fi6,bodies{6}{1}.local_vec,...
-%                                                     r7,fi7,bodies{7}{1}.local_vec,fi_6_7,dNM7) - func1(t);
-% 
-% F(29,1) = temp(2);
-% 
-% temp = progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
-%                                                     r9,fi9,bodies{9}{1}.local_vec,fi_8_9,dHG8) - func2(t);
-% 
-% F(30,1) = temp(2);
+temp = progressive_pair(r6,fi6,bodies{6}{1}.local_vec,...
+                                                    r7,fi7,bodies{7}{1}.local_vec,fi_6_7,dNM7) - func1(t);
 
-F(29,1) = relative_displacement_in_progressive_pair(r6,fi6,bodies{6}{1}.local_vec,...
-                                                    r7,fi7,bodies{7}{1}.local_vec,dNM7,func1,t);
-                                                
-F(30,1) = relative_displacement_in_progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
-                                                    r9,fi9,bodies{9}{1}.local_vec,dHG8,func2,t);
-nb =4;
+F(29,1) = temp(2);
+
+temp = progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
+                                                    r9,fi9,bodies{9}{1}.local_vec,fi_8_9,dHG8) - func2(t);
+
+F(30,1) = temp(2);
+
+% F(29,1) = relative_displacement_in_progressive_pair(r6,fi6,bodies{6}{1}.local_vec,...
+%                                                     r7,fi7,bodies{7}{1}.local_vec,dNM7,func1,t);
+%                                                 
+% F(30,1) = relative_displacement_in_progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
+%                                                     r9,fi9,bodies{9}{1}.local_vec,dHG8,func2,t);
+% nb =4;
 end

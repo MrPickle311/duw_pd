@@ -1,4 +1,4 @@
-function [T,Q] = main()
+function [T,Q,DQ,D2Q] = main()
 
     size = 30;
     %q=zeros(size,1);
@@ -11,9 +11,8 @@ function [T,Q] = main()
     % wczytaj dane dla ukladu
     [rot_pairs,body0,bodies,q0] = moje_dane();
     
-    
-    %dq=zeros(size,1); 
-    %d2q=zeros(size,1);
+    q_prim=zeros(size,1); 
+    q_bis=zeros(size,1);
     
     q = [0.7; -0.2; 0;
         0; 0.2; 0;
@@ -26,16 +25,22 @@ function [T,Q] = main()
         0.25; 0.05; 0;
         0.7; 0; 0];
 
-   %FI = @(t_i,q_i) Wiezy(q_i,t_i,rot_pairs,bodies,body0);
-%    Q = fsolve(FI,q);
-%       T= 4;
-    %[T,Q] = ode45(FI,[t0 tk],q);
-%     Q = 3;
     for t=t0:dt:tk
-        %q0=q+dq*dt+0.5*d2q*dt^2;
-        q=NewRaph(q,t,rot_pairs,bodies,body0);
+        q0=q+q_prim*dt+0.5*q_bis*dt^2;
+        
+        q=NewRaph(q0,t,rot_pairs,bodies,body0);
+        % predkosci
+        q_prim=  Jakobian(q0,rot_pairs,bodies,body0) \...
+            constrain_first_dot(q0,t,rot_pairs,bodies,body0);
+        % przyspieszenia
+        q_bis=Jakobian(q0,rot_pairs,bodies,body0)\...
+            constrains_bis(q0,q_prim,t,rot_pairs,bodies,body0);
+        
         lroz=lroz+1;
         T(1,lroz)=t; 
         Q(:,lroz)=q;
+        DQ(:,lroz)=q_prim;
+        D2Q(:,lroz)=q_bis;
     end
+    %plot(T(:,1),Q(:,1))
 end
