@@ -61,7 +61,7 @@ result(25:26,1) = progressive_acceleration(r6,r_prim_6,fi6,fi_prim_6,bodies{6}{1
 
 % para postepowa 8-9 , HG
 result(27:28,1) = progressive_acceleration(r8,r_prim_8,fi8,fi_prim_8,bodies{8}{1}.local_vec,...
-                                      r8,r_prim_8,fi8,fi_prim_8,vHG8);
+                                      r9,r_prim_9,fi9,fi_prim_9,vHG8);
 lk1 = sqrt(17)/5;
 ak1 = 0.1;
 wk1 = 0.1;
