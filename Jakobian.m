@@ -1,4 +1,4 @@
-function result=Jakobian(q,rot_pairs,bodies,body0)
+function result=Jakobian(q,rot_pairs,prog_pairs,bodies,body0)
 
 % Macierz Jaocobiego - początkowo zerowa
 result=zeros(30,30);

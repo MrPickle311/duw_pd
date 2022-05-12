@@ -9,7 +9,7 @@ function [T,Q,DQ,D2Q] = main()
     tk = 1;
     
     % wczytaj dane dla ukladu
-    [rot_pairs,body0,bodies,q0] = moje_dane();
+    [rot_pairs,prog_pairs,body0,bodies,q0] = moje_dane();
     
     q_prim=zeros(size,1); 
     q_bis=zeros(size,1);
@@ -28,13 +28,13 @@ function [T,Q,DQ,D2Q] = main()
     for t=t0:dt:tk
         q0=q+q_prim*dt+0.5*q_bis*dt^2;
         
-        q=NewRaph(q0,t,rot_pairs,bodies,body0);
+        q=NewRaph(q0,t,rot_pairs,prog_pairs,bodies,body0);
         % predkosci
-        q_prim=  Jakobian(q0,rot_pairs,bodies,body0) \...
-            constrain_first_dot(q0,t,rot_pairs,bodies,body0);
+        q_prim=  Jakobian(q0,rot_pairs,prog_pairs,bodies,body0) \...
+            constrain_first_dot(q0,t,rot_pairs,prog_pairs,bodies,body0);
         % przyspieszenia
-        q_bis=Jakobian(q0,rot_pairs,bodies,body0)\...
-            constrains_bis(q0,q_prim,t,rot_pairs,bodies,body0);
+        q_bis=Jakobian(q0,rot_pairs,prog_pairs,bodies,body0)\...
+            constrains_bis(q0,q_prim,t,rot_pairs,prog_pairs,bodies,body0);
         
         lroz=lroz+1;
         T(1,lroz)=t; 

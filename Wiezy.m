@@ -1,4 +1,4 @@
-function F=Wiezy(q,t,rot_pairs,bodies,body0)
+function F=Wiezy(q,t,rot_pairs,prog_pairs,bodies,body0)
 % Przypisanie elementom wektora q czytelnych nazw
 
 r0=[0;0];       fi0 = 0;

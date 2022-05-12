@@ -1,4 +1,4 @@
-function [rot_pairs,body_0,bodies,q0] = moje_dane()
+function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
     % konfiguracja poczatkowa w ukladzie globalnym
     % z pdfa
 

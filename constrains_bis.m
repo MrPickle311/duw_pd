@@ -1,4 +1,4 @@
-function result = constrains_bis(q,q_prim,t,rot_pairs,bodies,body0)
+function result = constrains_bis(q,q_prim,t,rot_pairs,prog_pairs,bodies,body0)
 
 % kinematyczne
 % obrotowe : wzór 2.42

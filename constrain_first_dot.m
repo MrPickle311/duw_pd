@@ -1,4 +1,4 @@
-function result = constrain_first_dot(q,t,rot_pairs,bodies,body0)
+function result = constrain_first_dot(q,t,rot_pairs,prog_pairs,bodies,body0)
 
 % tutaj niezerowe sa tylko funkcje z wiezow kierujacych
 
