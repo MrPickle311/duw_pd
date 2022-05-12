@@ -19,33 +19,20 @@ r10=q(28:29);   fi10=q(30);
 
 rot_size = size(rot_pairs);
 rot_size = rot_size(1);
+prog_size = size(prog_pairs);
+prog_size = prog_size(1);
 
 for n = 1:rot_size
     i = rot_pairs(n).body_i;
     j = rot_pairs(n).body_j;
     point = rot_pairs(n).point;
     
-    if i == 0
-        ri = 0;
-        fi_i = fi0;
-        s_i = get_local_vector_from_body_0(body0,point);
-    else
-        ri = q(3*i-2 : 3*i-1,1);
-        fi_i = q(3*i,1);
-        s_i = get_local_vector(bodies,i,point);
-    end
+    [ri,fi_i,s_i,rj,fi_j,s_j] = get_current_data(q,bodies,body0,i,j,point,point);
     
-    rj = q(3*j-2 : 3*j-1,1);
-    fi_j = q(3*j,1);
-    s_j = get_local_vector(bodies,j,point);
-
     F(2*n-1:2*n,1) = rotate_pair(ri,fi_i,s_i,rj,fi_j,s_j);
 end
 
 %pary postepowe
-
-prog_size = size(prog_pairs);
-prog_size = prog_size(1);
 
 for n = 1:prog_size
     i = prog_pairs(n).body_i;
@@ -55,19 +42,7 @@ for n = 1:prog_size
     fi_i_j = prog_pairs(n).fi_i_j;
     perp = prog_pairs(n).perpendicular_versor;
     
-    if i == 0
-        ri = 0;
-        fi_i = fi0;
-        s_i = get_local_vector_from_body_0(body0,point_i);
-    else
-        ri = q(3*i-2 : 3*i-1,1);
-        fi_i = q(3*i,1);
-        s_i = get_local_vector(bodies,i,point_i);
-    end
-    
-    rj = q(3*j-2 : 3*j-1,1);
-    fi_j = q(3*j,1);
-    s_j = get_local_vector(bodies,j,point_j);
+    [ri,fi_i,s_i,rj,fi_j,s_j] = get_current_data(q,bodies,body0,i,j,point_i,point_j);
     
     from = 2*rot_size+2*n - 1;
     to = from + 1;
