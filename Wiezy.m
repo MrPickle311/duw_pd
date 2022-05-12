@@ -42,7 +42,38 @@ for n = 1:rot_size
     F(2*n-1:2*n,1) = rotate_pair(ri,fi_i,s_i,rj,fi_j,s_j);
 end
 
+%pary postepowe
 
+prog_size = size(prog_pairs);
+prog_size = prog_size(1);
+
+for n = 1:prog_size
+    i = prog_pairs(n).body_i;
+    j = prog_pairs(n).body_j;
+    point_i = prog_pairs(n).point_i;
+    point_j = prog_pairs(n).point_j;
+    fi_i_j = prog_pairs(n).fi_i_j;
+    perp = prog_pairs(n).perpendicular_versor;
+    
+    if i == 0
+        ri = 0;
+        fi_i = fi0;
+        s_i = get_local_vector_from_body_0(body0,point_i);
+    else
+        ri = q(3*i-2 : 3*i-1,1);
+        fi_i = q(3*i,1);
+        s_i = get_local_vector(bodies,i,point_i);
+    end
+    
+    rj = q(3*j-2 : 3*j-1,1);
+    fi_j = q(3*j,1);
+    s_j = get_local_vector(bodies,j,point_j);
+    
+    from = 2*rot_size+2*n - 1;
+    to = from + 1;
+    
+    F(from:to,1) = progressive_pair(ri,fi_i,s_i,rj,fi_j,s_j,fi_i_j,perp);
+end
 
 % para 6-7
 fi_6_7 = 0;%-pi; % staly kat obrotu ukladu 6 wzgledem 7
@@ -53,21 +84,6 @@ dNM7 = Rot(pi/2)*vNM7;%Rot(pi/2)*vNM7; %[-1 0]'; % wersor ruchu wzglêdnego w uk
 fi_8_9 = 0; % staly kat obrotu ukladu 8 wzgledem 9
 vHG8 = [-5;1]/sqrt(26);%[0 -1]'; % wersor prostopadly do osi ruchu wzglednego w ukladzie 8
 dHG8 = Rot(pi/2)*vHG8;%Rot(pi/2)*vHG8;%[-1 0]'; % wersor ruchu wzglêdnego w ukladzie 8
-
-% para postepowa 6-7 , NM
-F(25:26,1) = progressive_pair(r6,fi6,bodies{6}{1}.local_vec,...
-                              r7,fi7,bodies{7}{1}.local_vec,fi_6_7,vNM7);
-
-% para postepowa 8-9 , HG
-F(27:28,1) = progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
-                              r9,fi9,bodies{9}{1}.local_vec,fi_8_9,vHG8);
-
-% wiezy kierujace
-
-% lk1 = sqrt(17);
-% ak1 = 0.01;
-% wk1 = 50;
-% fi_k1 = 0.0;
 
 lk1 = sqrt(17)/5;
 ak1 = 0.1;
@@ -92,11 +108,4 @@ temp = progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
                                                     r9,fi9,bodies{9}{1}.local_vec,fi_8_9,dHG8) - func2(t);
 
 F(30,1) = temp(2);
-
-% F(29,1) = relative_displacement_in_progressive_pair(r6,fi6,bodies{6}{1}.local_vec,...
-%                                                     r7,fi7,bodies{7}{1}.local_vec,dNM7,func1,t);
-%                                                 
-% F(30,1) = relative_displacement_in_progressive_pair(r8,fi8,bodies{8}{1}.local_vec,...
-%                                                     r9,fi9,bodies{9}{1}.local_vec,dHG8,func2,t);
-% nb =4;
 end
