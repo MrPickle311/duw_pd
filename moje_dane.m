@@ -54,48 +54,6 @@ function [rot_pairs,body_0,bodies,q0] = moje_dane()
         define_progressive_pair(8,'H',9,'G',0,rc80,rc90);
         ];
     
-    %nazewnictwo -> s<numer_czlonu><Punkt>_<numer_ukladu_odniesienia>
-
-    % czlon 0
-    s0O_0 = rO0;
-    s0N_0 = rN0;
-    s0H_0 = rH0;
-
-    % obliczanie wektorow s w ukladach lokalnych ( stale wektory w lokalnych
-    % ukladach odniesienia)
-
-    s1A_1 = get_vector_from_local_origin_to_point(rA0,rc10);
-    s1D_1 = get_vector_from_local_origin_to_point(rD0,rc10);
-    s1P_1 = get_vector_from_local_origin_to_point(rP0,rc10);
-    % czlon 2
-    s2O_2 = get_vector_from_local_origin_to_point(rO0,rc20);
-    s2P_2 = get_vector_from_local_origin_to_point(rP0,rc20);
-    s2F_2 = get_vector_from_local_origin_to_point(rF0,rc20);
-    s2G_2 = get_vector_from_local_origin_to_point(rG0,rc20);
-    % czlon 3
-    s3F_3 = get_vector_from_local_origin_to_point(rF0,rc30);
-    s3E_3 = get_vector_from_local_origin_to_point(rE0,rc30);
-    s3C_3 = get_vector_from_local_origin_to_point(rC0,rc30);
-    % czlon 4
-    s4A_4 = get_vector_from_local_origin_to_point(rA0,rc40);
-    s4K_4 = get_vector_from_local_origin_to_point(rK0,rc40);
-    s4B_4 = get_vector_from_local_origin_to_point(rB0,rc40);
-    % czlon 5
-    s5C_5 = get_vector_from_local_origin_to_point(rC0,rc50);
-    s5B_5 = get_vector_from_local_origin_to_point(rB0,rc50);
-    % czlon 6
-    s6N_6 = get_vector_from_local_origin_to_point(rN0,rc60);
-    % czlon 7
-    s7M_7 = get_vector_from_local_origin_to_point(rM0,rc70);
-    % czlon 8
-    s8H_8 = get_vector_from_local_origin_to_point(rH0,rc80);
-    % czlon 9
-    s9G_9 = get_vector_from_local_origin_to_point(rG0,rc90);
-    % czlon 10
-    s10E_10 = get_vector_from_local_origin_to_point(rE0,rc100);
-    s10M_10 = get_vector_from_local_origin_to_point(rM0,rc100);
-    s10D_10 = get_vector_from_local_origin_to_point(rD0,rc100);
-
     % nadawanie wartosci startowych
 
     % nadajemy wstepne polozenie czlonu(rc_i) oraz wstepna orientacje (s1A_1)
