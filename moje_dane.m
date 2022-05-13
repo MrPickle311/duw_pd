@@ -61,12 +61,17 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
     fi_k2 = 0.0;
     
     func1 = @(t_i) lk1 + ak1*sin(wk1*t_i + fi_k1);
-    
     func2 = @(t_i) lk2 + ak2*sin(wk2*t_i + fi_k2);
     
+    func1_prim = @(t_i) ak1*wk1*cos(t_i*wk1+fi_k1);
+    func2_prim = @(t_i) ak2*wk2*cos(t_i*wk2+fi_k2);
+    
+    func1_bis = @(t_i) -1*ak1*wk1*wk1*sin(t*wk1+fi_k1);
+    func2_bis = @(t_i) -1*ak2*wk2*wk2*sin(t*wk2+fi_k2);
+    
     prog_pairs = [
-        define_progressive_pair(6,'N',7,'M',0,rc60,rc70,func1);
-        define_progressive_pair(8,'H',9,'G',0,rc80,rc90,func2);
+        define_progressive_pair(6,'N',7,'M',0,rc60,rc70,func1,func1_prim,func1_bis);
+        define_progressive_pair(8,'H',9,'G',0,rc80,rc90,func2,func2_prim,func2_bis);
         ];
     
     % nadawanie wartosci startowych
@@ -107,7 +112,7 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
     % pobranie rozmiaru tego : s = size(bodies{2}) , s(2) to jest rozmiar
 end
 
-function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r_i,r_j,driving_func)
+function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r_i,r_j,driving_func,driving_func_prim,driving_func_bis)
     result.body_i = body_i;
     result.body_j = body_j;
     result.point_i = point_i;
@@ -118,22 +123,30 @@ function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r
     result.perpendicular_versor = Rot(pi/2) * result.driving_versor;
     result.driving_versor = Rot(pi)*result.driving_versor;
     
-    if nargin < 8
+    if nargin < 10
         result.driving_func = '';
+        result.driving_func_prim = '';
+        result.driving_func_bis = '';
     else
         result.driving_func = driving_func;
+        result.driving_func_prim = driving_func_prim;
+        result.driving_func_bis = driving_func_bis;
     end
 end
 
-function result = define_rotation_pair(body_i,body_j,point,driving_func)
+function result = define_rotation_pair(body_i,body_j,point,driving_func,driving_func_prim,driving_func_bis)
     result.body_i = body_i;
     result.body_j = body_j;
     result.point = point;
     
-    if nargin < 4
+    if nargin < 6
         result.driving_func = '';
+        result.driving_func_prim = '';
+        result.driving_func_bis = '';
     else
         result.driving_func = driving_func;
+        result.driving_func_prim = driving_func_prim;
+        result.driving_func_bis = driving_func_bis;
     end
 end
 
