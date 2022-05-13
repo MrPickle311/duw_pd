@@ -116,6 +116,7 @@ function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r
     temp_vec = r_j - r_i;
     result.driving_versor = (temp_vec) / norm(temp_vec);
     result.perpendicular_versor = Rot(pi/2) * result.driving_versor;
+    result.driving_versor = Rot(pi)*result.driving_versor;
     
     if nargin < 8
         result.driving_func = '';

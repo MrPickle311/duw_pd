@@ -47,7 +47,7 @@ for n = 1:prog_size
     if ~strcmp(driving_func,'')
         row = 2*rot_size + 2*prog_size + rot_driving_pairs_count + n;
         temp = progressive_pair(ri,fi_i,s_i,...
-            rj,fi_j,s_j,fi_i_j,Rot(pi)*driv) - driving_func(t);
+            rj,fi_j,s_j,fi_i_j,driv) - driving_func(t);
         F(row,1) = temp(2);
     end
 end
