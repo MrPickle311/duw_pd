@@ -49,9 +49,9 @@ function [timespan,q_i,dq_i,d2q_i] = main()
     
     test_data = load('matlab.mat');
     
-    q_test = test_data.Q;
-    dq_test = test_data.DQ;
-    d2q_test = test_data.D2Q;
+    q_test = test_data.q_i;
+    dq_test = test_data.dq_i;
+    d2q_test = test_data.d2q_i;
     
     is_q_eq = isequal(q_test,q_i);
     is_dq_eq = isequal(dq_test,dq_i);
