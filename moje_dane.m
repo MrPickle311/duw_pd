@@ -66,8 +66,8 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
     func1_prim = @(t_i) ak1*wk1*cos(t_i*wk1+fi_k1);
     func2_prim = @(t_i) ak2*wk2*cos(t_i*wk2+fi_k2);
     
-    func1_bis = @(t_i) -1*ak1*wk1*wk1*sin(t*wk1+fi_k1);
-    func2_bis = @(t_i) -1*ak2*wk2*wk2*sin(t*wk2+fi_k2);
+    func1_bis = @(t_i) -1*ak1*wk1*wk1*sin(t_i*wk1+fi_k1);
+    func2_bis = @(t_i) -1*ak2*wk2*wk2*sin(t_i*wk2+fi_k2);
     
     prog_pairs = [
         define_progressive_pair(6,'N',7,'M',0,rc60,rc70,func1,func1_prim,func1_bis);
