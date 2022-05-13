@@ -1,4 +1,4 @@
-function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
+function [rot_pairs,prog_pairs,body_0,bodies,q] = moje_dane()
     % konfiguracja poczatkowa w ukladzie globalnym
     % z pdfa
 
@@ -75,18 +75,18 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
         ];
     
     % nadawanie wartosci startowych
-
     % nadajemy wstepne polozenie czlonu(rc_i) oraz wstepna orientacje
-    q0(1:3,1) = generate_start_values(rc10,rA0);
-    q0(4:6,1) = generate_start_values(rc20,rO0);
-    q0(7:9,1) = generate_start_values(rc30,rF0);
-    q0(10:12,1) = generate_start_values(rc40,rA0);
-    q0(13:15,1) = generate_start_values(rc50,rC0);
-    q0(16:18,1) = generate_start_values(rc60,rN0);
-    q0(19:21,1) = generate_start_values(rc70,rM0);
-    q0(22:24,1) = generate_start_values(rc80,rH0);
-    q0(25:27,1) = generate_start_values(rc90,rG0);
-    q0(28:30,1) = generate_start_values(rc100,rE0);
+    
+    q = [0.7; -0.2; 0;
+        0; 0.2; 0;
+        0.2; 0.3; 0;
+        1.55; -0.35; 0;
+        0.9; 0.2; 0;
+        0.2; -0.35; 0;
+        0.6; -0.25; 0;
+        0.15; -0.45; 0;
+        0.25; 0.05; 0;
+        0.7; 0; 0];
     
     % kreacja czlonow
     
@@ -110,66 +110,4 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
     % bodies{nr czlonu}{nr.punktu}.point lub local_vector
     % body = bodies{2}{3}.point
     % pobranie rozmiaru tego : s = size(bodies{2}) , s(2) to jest rozmiar
-end
-
-function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r_i,r_j,driving_func,driving_func_prim,driving_func_bis)
-    result.body_i = body_i;
-    result.body_j = body_j;
-    result.point_i = point_i;
-    result.point_j = point_j;
-    result.fi_i_j = fi_i_j;
-    temp_vec = r_j - r_i;
-    result.driving_versor = (temp_vec) / norm(temp_vec);
-    result.perpendicular_versor = Rot(pi/2) * result.driving_versor;
-    result.driving_versor = Rot(pi)*result.driving_versor;
-    
-    if nargin < 10
-        result.driving_func = '';
-        result.driving_func_prim = '';
-        result.driving_func_bis = '';
-    else
-        result.driving_func = driving_func;
-        result.driving_func_prim = driving_func_prim;
-        result.driving_func_bis = driving_func_bis;
-    end
-end
-
-function result = define_rotation_pair(body_i,body_j,point,driving_func,driving_func_prim,driving_func_bis)
-    result.body_i = body_i;
-    result.body_j = body_j;
-    result.point = point;
-    
-    if nargin < 6
-        result.driving_func = '';
-        result.driving_func_prim = '';
-        result.driving_func_bis = '';
-    else
-        result.driving_func = driving_func;
-        result.driving_func_prim = driving_func_prim;
-        result.driving_func_bis = driving_func_bis;
-    end
-end
-
-% wazne jest zachowanie takiej samej kolejnosci punktow w obu argumentach
-function result = produce_body(points_descriptors , global_vectors_to_points, rc_i) 
-    for i = 1:strlength(points_descriptors)
-        result{i} = produce_body_entity(points_descriptors(i) ,...
-           get_vector_from_local_origin_to_point(global_vectors_to_points(:,i),rc_i));
-%        result{i}.point 
-%     result{i}.local_vec
-    end
-end
-
-function result = produce_body0(points_descriptors , global_vectors_to_points) 
-    for i = 1:strlength(points_descriptors)
-        result{i} = produce_body_entity(points_descriptors(i) ,...
-                                        global_vectors_to_points(:,i));
-                                    result{i}.point
-                                    result{i}.local_vec
-    end
-end
-
-function result = produce_body_entity(point, local_vec)
-    result.point = point;
-    result.local_vec = local_vec;
 end

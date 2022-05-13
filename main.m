@@ -1,7 +1,6 @@
 function [timespan,q_i,dq_i,d2q_i] = main()
 
     size = 30;
-    %q=zeros(size,1);
     lroz=0; % Licznik rozwiązań (służy do numerowania kolumn w tablicach z wynikami)
     
     t0=0;
@@ -9,21 +8,10 @@ function [timespan,q_i,dq_i,d2q_i] = main()
     tk = 1;
     
     % wczytaj dane dla ukladu
-    [rot_pairs,prog_pairs,body0,bodies,q0] = moje_dane();
+    [rot_pairs,prog_pairs,body0,bodies,q] = moje_dane();
     
     q_prim=zeros(size,1); 
     q_bis=zeros(size,1);
-    
-    q = [0.7; -0.2; 0;
-        0; 0.2; 0;
-        0.2; 0.3; 0;
-        1.55; -0.35; 0;
-        0.9; 0.2; 0;
-        0.2; -0.35; 0;
-        0.6; -0.25; 0;
-        0.15; -0.45; 0;
-        0.25; 0.05; 0;
-        0.7; 0; 0];
 
     for t=t0:dt:tk
         q0=q+q_prim*dt+0.5*q_bis*dt^2;
