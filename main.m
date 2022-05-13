@@ -1,4 +1,4 @@
-function [T,Q,DQ,D2Q] = main()
+function [timespan,q_i,dq_i,d2q_i] = main()
 
     size = 30;
     %q=zeros(size,1);
@@ -37,10 +37,38 @@ function [T,Q,DQ,D2Q] = main()
             constrains_bis(q0,q_prim,t,rot_pairs,prog_pairs,bodies,body0);
         
         lroz=lroz+1;
-        T(1,lroz)=t; 
-        Q(:,lroz)=q;
-        DQ(:,lroz)=q_prim;
-        D2Q(:,lroz)=q_bis;
+        timespan(1,lroz)=t; 
+        q_i(:,lroz)=q;
+        dq_i(:,lroz)=q_prim;
+        d2q_i(:,lroz)=q_bis;
     end
-    %plot(T(:,1),Q(:,1))
+    
+    % testy jednostkowe
+    
+    disp('Testowanie...')
+    
+    test_data = load('matlab.mat');
+    
+    q_test = test_data.Q;
+    dq_test = test_data.DQ;
+    d2q_test = test_data.D2Q;
+    
+    is_q_eq = isequal(q_test,q_i);
+    is_dq_eq = isequal(dq_test,dq_i);
+    is_d2q_eq = isequal(d2q_test,d2q_i);
+    
+    if ~is_q_eq
+        error('Polozenia sie nie zgadzaja z danymi testowymi')
+    end
+    
+    if ~is_dq_eq
+        error('Predkosci sie nie zgadzaja z danymi testowymi')
+    end
+    
+    if ~is_d2q_eq
+        error('Przyspieszenia sie nie zgadzaja z danymi testowymi')
+    end
+    
+    disp('Zakonczono testowanie')
+    
 end
