@@ -30,7 +30,8 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
     rc90 = [0.25 0.05]';
     rc100 = [0.7 0]';
 
-    % definicja par obrotowych
+    % definicja par obrotowych + ewentualne funkcje wymuszajace ruch
+    
     rot_pairs = [
                  define_rotation_pair(1,4,'A'); % np. para 1-4 punkt A
                  define_rotation_pair(4,5,'B');
@@ -47,16 +48,30 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
                  ];
 
              
-    % definicja par postępowych
+    % definicja par postępowych + ewentualne funkcje wymuszajace ruch
+    
+    lk1 = sqrt(17)/5;
+    ak1 = 0.1;
+    wk1 = 0.1;
+    fi_k1 = 0.0;
+    
+    lk2 = sqrt(26)/5;
+    ak2 = 0.1;
+    wk2 = 0.1;
+    fi_k2 = 0.0;
+    
+    func1 = @(t_i) lk1 + ak1*sin(wk1*t_i + fi_k1);
+    
+    func2 = @(t_i) lk2 + ak2*sin(wk2*t_i + fi_k2);
     
     prog_pairs = [
-        define_progressive_pair(6,'N',7,'M',0,rc60,rc70);
-        define_progressive_pair(8,'H',9,'G',0,rc80,rc90);
+        define_progressive_pair(6,'N',7,'M',0,rc60,rc70,func1);
+        define_progressive_pair(8,'H',9,'G',0,rc80,rc90,func2);
         ];
     
     % nadawanie wartosci startowych
 
-    % nadajemy wstepne polozenie czlonu(rc_i) oraz wstepna orientacje (s1A_1)
+    % nadajemy wstepne polozenie czlonu(rc_i) oraz wstepna orientacje
     q0(1:3,1) = generate_start_values(rc10,rA0);
     q0(4:6,1) = generate_start_values(rc20,rO0);
     q0(7:9,1) = generate_start_values(rc30,rF0);
