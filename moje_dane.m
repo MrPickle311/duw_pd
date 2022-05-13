@@ -92,7 +92,7 @@ function [rot_pairs,prog_pairs,body_0,bodies,q0] = moje_dane()
     % pobranie rozmiaru tego : s = size(bodies{2}) , s(2) to jest rozmiar
 end
 
-function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r_i,r_j)
+function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r_i,r_j,driving_func)
     result.body_i = body_i;
     result.body_j = body_j;
     result.point_i = point_i;
@@ -101,12 +101,24 @@ function result = define_progressive_pair(body_i,point_i,body_j,point_j,fi_i_j,r
     temp_vec = r_j - r_i;
     result.driving_versor = (temp_vec) / norm(temp_vec);
     result.perpendicular_versor = Rot(pi/2) * result.driving_versor;
+    
+    if nargin < 8
+        result.driving_func = '';
+    else
+        result.driving_func = driving_func;
+    end
 end
 
-function result = define_rotation_pair(body_i,body_j,point)
+function result = define_rotation_pair(body_i,body_j,point,driving_func)
     result.body_i = body_i;
     result.body_j = body_j;
     result.point = point;
+    
+    if nargin < 4
+        result.driving_func = '';
+    else
+        result.driving_func = driving_func;
+    end
 end
 
 % wazne jest zachowanie takiej samej kolejnosci punktow w obu argumentach
