@@ -25,25 +25,24 @@ for n = 1:rot_size
     i = rot_pairs(n).body_i;
     j = rot_pairs(n).body_j;
     point = rot_pairs(n).point;
+    driving_func_bis = rot_pairs(n).driving_func_bis;
+    
+    [ri,fi_i,s_i,rj,fi_j,s_j] = get_current_data(q,bodies,body0,i,j,point,point);
     
     if i == 0
-%         ri = 0;
-        fi_i = fi0;
         fi_prim_i = 0;
-        s_i = get_local_vector_from_body_0(body0,point);
     else
-%         ri = q(3*i-2 : 3*i-1,1);
-        fi_i = q(3*i,1);
         fi_prim_i = q_prim(3*i,1);
-        s_i = get_local_vector(bodies,i,point);
     end
     
-%     rj = q(3*j-2 : 3*j-1,1);
-    fi_j = q(3*j,1);
     fi_prim_j = q_prim(3*j,1);
-    s_j = get_local_vector(bodies,j,point);
 
     result(2*n-1:2*n,1) = rotate_acceleration(fi_i,s_i,fi_prim_i,fi_j,s_j,fi_prim_j);
+    
+    if ~strcmp(driving_func_bis,'')
+        F(rot_size + prog_size + n,1) = driving_func_bis(t);
+        rot_driving_pairs_count = rot_driving_pairs_count + 1;
+    end
 end
 
 fi_6_7 = 0;%-pi; % staly kat obrotu ukladu 6 wzgledem 7
