@@ -14,13 +14,14 @@ for n = 1:rot_size
     i = rot_pairs(n).body_i;
     j = rot_pairs(n).body_j;
     point = rot_pairs(n).point;
+    driving_func = rot_pairs(n).driving_func;
     
     [ri,fi_i,s_i,rj,fi_j,s_j] = get_current_data(q,bodies,body0,i,j,point,point);
     
     F(2*n-1:2*n,1) = rotate_pair(ri,fi_i,s_i,rj,fi_j,s_j);
     
-    if rot_pairs(n).driving_func ~= ''
-        F(rot_size + prog_size + n,1) = fi_i - fi_j - eval(rot_pairs(n).driving_func);
+    if ~strcmp(driving_func,'')
+        F(rot_size + prog_size + n,1) = fi_i - fi_j - driving_func(t);
         rot_driving_pairs_count = rot_driving_pairs_count + 1;
     end
 end
